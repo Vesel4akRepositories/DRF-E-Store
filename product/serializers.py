@@ -14,3 +14,4 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 #https://github.com/earthcomfy/django-ecommerce-api/blob/master/products/urls.py
+#brew services stop postgresql  

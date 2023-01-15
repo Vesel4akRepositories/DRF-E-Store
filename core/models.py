@@ -1,57 +1,73 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin,BaseUserManager
+from django.contrib.auth.models import User
+from product.models import Product
 
-# Create your CustomUserManager here.
-class CustomUserManager(BaseUserManager):
-    def _create_user(self, email, password, first_name, last_name, mobile, **extra_fields):
-        if not email:
-            raise ValueError("Email must be provided")
-        if not password:
-            raise ValueError('Password is not provided')
+# # Create your CustomUserManager here.
+# class CustomUserManager(BaseUserManager):
+#     def _create_user(self, email, password, first_name, last_name, mobile, **extra_fields):
+#         if not email:
+#             raise ValueError("Email must be provided")
+#         if not password:
+#             raise ValueError('Password is not provided')
 
-        user = self.model(
-            email = self.normalize_email(email),
-            first_name = first_name,
-            last_name = last_name,
-            mobile = mobile,
-            **extra_fields
-        )
+#         user = self.model(
+#             email = self.normalize_email(email),
+#             first_name = first_name,
+#             last_name = last_name,
+#             mobile = mobile,
+#             **extra_fields
+#         )
 
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
 
-    def create_user(self, email, password, first_name, last_name, mobile, **extra_fields):
-        extra_fields.setdefault('is_staff',True)
-        extra_fields.setdefault('is_active',True)
-        extra_fields.setdefault('is_superuser',False)
-        return self._create_user(email, password, first_name, last_name, mobile, password, **extra_fields)
+#     def create_user(self, email, password, first_name, last_name, mobile, **extra_fields):
+#         extra_fields.setdefault('is_staff',True)
+#         extra_fields.setdefault('is_active',True)
+#         extra_fields.setdefault('is_superuser',False)
+#         return self._create_user(email, password, first_name, last_name, mobile, password, **extra_fields)
 
-    def create_superuser(self, email, password, first_name, last_name, mobile, **extra_fields):
-        extra_fields.setdefault('is_staff',True)
-        extra_fields.setdefault('is_active',True)
-        extra_fields.setdefault('is_superuser',True)
-        return self._create_user(email, password, first_name, last_name, mobile, **extra_fields)
+#     def create_superuser(self, email, password, first_name, last_name, mobile, **extra_fields):
+#         extra_fields.setdefault('is_staff',True)
+#         extra_fields.setdefault('is_active',True)
+#         extra_fields.setdefault('is_superuser',True)
+#         return self._create_user(email, password, first_name, last_name, mobile, **extra_fields)
 
 
-class User(AbstractBaseUser,PermissionsMixin):
-    # Abstractbaseuser has password, last_login, is_active by default
+# class User(AbstractBaseUser,PermissionsMixin):
+#     # Abstractbaseuser has password, last_login, is_active by default
 
-    email = models.EmailField(db_index=True, unique=True, max_length=254)
-    first_name = models.CharField(max_length=240)
-    last_name = models.CharField(max_length=255)
-    mobile = models.CharField(max_length=50)
-    address = models.CharField( max_length=250)
+#     email = models.EmailField(db_index=True, unique=True, max_length=254)
+#     first_name = models.CharField(max_length=240)
+#     last_name = models.CharField(max_length=255)
+#     mobile = models.CharField(max_length=50)
+#     address = models.CharField( max_length=250)
 
-    is_staff = models.BooleanField(default=True) # must needed, otherwise you won't be able to loginto django-admin.
-    is_active = models.BooleanField(default=True) # must needed, otherwise you won't be able to loginto django-admin.
-    is_superuser = models.BooleanField(default=False) # this field we inherit from PermissionsMixin.
+#     is_staff = models.BooleanField(default=True) # must needed, otherwise you won't be able to loginto django-admin.
+#     is_active = models.BooleanField(default=True) # must needed, otherwise you won't be able to loginto django-admin.
+#     is_superuser = models.BooleanField(default=False) # this field we inherit from PermissionsMixin.
 
-    objects = CustomUserManager()
+#     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name','last_name','mobile']
+#     USERNAME_FIELD = 'email'
+#     REQUIRED_FIELDS = ['first_name','last_name','mobile']
+
+#     class Meta:
+#         verbose_name = 'User'
+#         verbose_name_plural = 'Users'
+
+
+class Cart(models.Model):
+    cart_id = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    products = models.ManyToManyField(Product)
 
     class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
+        ordering = ['cart_id', '-created_at']
+        
+
+    def __str__(self):
+        return f'{self.cart_id}'
+

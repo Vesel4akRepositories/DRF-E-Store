@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
+
+
 # Create your models here.
 def category_image_path(instance, filename):
     return f'product/category/icons/{filename}'
@@ -45,3 +47,4 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+

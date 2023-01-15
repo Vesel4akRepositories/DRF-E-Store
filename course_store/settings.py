@@ -27,7 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_ENABLED': False,
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,13 +42,38 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'core',
     'product',
+    'corsheaders',
+    'rest_registration',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+"http://www.website.com",
+"http://localhost:3000",
+"http://localhost:4200",
+"https://web.postman.co",
+]
+
+CORS_ALLOW_METHODS = [
+"GET",
+"PUT",
+"DELETE",
+"POST",
+]
+
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+        # 'rest_framework.authentication.TokenAuthentication'
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -79,7 +108,7 @@ WSGI_APPLICATION = 'course_store.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'store',
+        'NAME': 'postgres',
         'USER': 'vesel4ak',
         'PASSWORD': '123456',
         'HOST': 'localhost',
@@ -87,7 +116,9 @@ DATABASES = {
     }
 }
 
-
+# AUTHENTICATION_BACKENDS = (
+#     ('django.contrib.auth.backends.ModelBackend'),
+# )
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -106,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'core.User'
+#AUTH_USER_MODEL = 'core.User'
 
 
 # Internationalization
