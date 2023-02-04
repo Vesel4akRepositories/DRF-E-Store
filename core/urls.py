@@ -12,5 +12,5 @@ urlpatterns = [
    path('auth/register/', RegistrationAPIView.as_view(), name='register'),
    path('auth/login/', TokenObtainPairView.as_view(), name='login'),
    path('auth/refresh-token', TokenRefreshView.as_view(), name='refreshtoken'),
-   path(r'profile/(?P<user_id>\w+)$', UserProfileView.as_view(), name='profile'),
+   path('profile/<int:pk>/', UserProfileView.as_view(), name='profile'),
 ]

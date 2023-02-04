@@ -18,10 +18,16 @@ from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 #from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+api_urlpatterns = [
+    path('accounts/', include('rest_registration.api.urls')),
+    path('core/', include('core.urls')),
+    path('products/', include('product.urls', namespace='product')),
+    path('orders/', include('orders.urls', namespace='orders')),
+]
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/products/', include('product.urls', namespace='product')),
-    path('api/core/', include('core.urls', namespace='core')),
-    #path('api/v1/auth/auth-token', obtain_auth_token, name='obtain-auth-token'),
+    path('api/v1/', include(api_urlpatterns)),
+    path('api/v1/auth/auth-token', obtain_auth_token, name='obtain-auth-token'),
    # path('api-auth/', include('rest_framework.urls')),
 ]
