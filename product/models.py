@@ -31,6 +31,7 @@ def get_default_product_category():
 
 
 class Product(models.Model):
+    id = models.AutoField(primary_key=True)
     category = models.ForeignKey(
         ProductCategory, related_name="product_list", on_delete=models.SET(get_default_product_category))
     name = models.CharField(max_length=200)

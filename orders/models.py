@@ -12,7 +12,7 @@ ORDER_STATUS_CHOICES = (
 
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    products = models.ManyToManyField(Product, through='OrderProduct')
+    products = models.ManyToManyField(Product, through='OrderProduct', blank=False)
     status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='created')
     total_price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     created_at = models.DateTimeField(auto_now_add=True)

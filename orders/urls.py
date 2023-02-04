@@ -3,10 +3,10 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'orders', views.OrderViewSet)
+router.register(r'', views.OrderViewSet)
 
 app_name = 'orders'
 
 urlpatterns = [
     path('', include(router.urls)),
-]
+]   
