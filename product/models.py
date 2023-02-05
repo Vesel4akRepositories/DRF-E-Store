@@ -4,11 +4,11 @@ from django.utils.translation import gettext as _
 
 # Create your models here.
 def category_image_path(instance, filename):
-    return f'product/category/icons/{filename}'
+    return f'static/category/icons/{filename}'
 
 
 def product_image_path(instance, filename):
-    return f'product/images/{filename}'
+    return f'static/product/images/{filename}'
 
 
 class ProductCategory(models.Model):
