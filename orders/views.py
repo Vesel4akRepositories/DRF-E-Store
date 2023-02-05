@@ -10,18 +10,19 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
     def get_queryset(self):
-        return self.queryset.filter(customer=self.request.user)
+        print(self.request.user.id)
+        order_ids = OrderProduct.objects.filter(order__customer=self.request.user.id).values_list('order', flat=True)
+        return self.queryset.filter(id__in=order_ids)
         
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.validated_data['customer'] = self.request.user
+        
         order = serializer.save()
     
         products = json.loads(request.data.get('products', '[]'))
-        print(products)
         for product_data in products:
-            print('jello')
-            print(product_data)
             product = Product.objects.get(id=int(product_data['id']))
             OrderProduct.objects.create(
                 order=order,
