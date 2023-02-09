@@ -10,7 +10,14 @@ class ProductCategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'   
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        request = self.context.get('request')
+        if request:
+            representation['image'] = request.build_absolute_uri(representation['image'])
+        return representation
 
 
 #https://github.com/earthcomfy/django-ecommerce-api/blob/master/products/urls.py

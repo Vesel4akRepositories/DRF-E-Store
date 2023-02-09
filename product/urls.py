@@ -11,9 +11,11 @@ app_name = 'products'
 
 router = DefaultRouter()
 router.register(r'categories', ProductCategoryViewSet)
+#router.register(r'categories/<int:category_id>/', ProductViewSet.as_view({'get': 'retrieve_products_by_category'})),
 router.register(r'', ProductViewSet)
 
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('category/<int:category_id>/',  ProductViewSet.as_view({'get': 'retrieve_products_by_category'})),
 ]

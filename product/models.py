@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-
-# Create your models here.
 def category_image_path(instance, filename):
     return f'static/category/icons/{filename}'
 
